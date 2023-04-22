@@ -17,8 +17,6 @@ export default function App() {
 
   // 🔥 STEP 1 - WE NEED STATE TO HOLD ALL VALUES OF THE FORM!
   const [formValues, setFormValues] = useState(initialFormValues) // fix this using the state hook
-  // console.log('formValues', formValues)
-
   const [formError, setFormError] = useState('');
 
   const updateForm = (inputName, inputValue) => {
@@ -38,16 +36,22 @@ export default function App() {
       email: formValues.email.trim(),
       role: formValues.role
     }
-    if(!newFriend.username || !newFriend.email || !newFriend.role) {
-      setFormError("Please enter valid username, email, and role!")
+    if (!newFriend.username || !newFriend.email || !newFriend.role) {
+      setFormError('Username, Email, and Role is required')
+    } else{
+      setFormError('');
     }
+
+    // option: 1 this is an option without axios
+    // setFriends(prevFriends => [...prevFriends, newFriend])
+    // setFormValues({username: '', email: '', role: ''})
     axios.post('fakeapi.com', newFriend)
-      .then(res => {
-        console.log(res)
+      .then( res => {
         setFriends([res.data, ...friends])
-        setFormValues(initialFormValues)
       })
       .catch(err => console.error(err))
+
+    setFormValues(initialFormValues)
   }
 
   useEffect(() => {
